@@ -128,11 +128,6 @@ public class SpendController {
 		return ResponseEntity.ok(financialRepository.save(requestUpdateTransaction));
 	}
 
-	@GetMapping("/get-link/logout")
-	public String getStringForLogout( HttpServletRequest request) {
-		String token = Arrays.stream(request.getCookies()).filter(cookie -> cookie.getName().equals("code")).findFirst().orElse(null).getValue();
-		return "http://localhost:8080/auth/realms/baeldung/protocol/openid-connect/logout?id_token_hint=" + token + "&post_logout_redirect_uri=http://localhost:4200";
-	}
 	@GetMapping("/user/logout")
 	public void logout(HttpServletResponse response) {
 		Cookie refreshCode = annulateCookies("refreshCode");
