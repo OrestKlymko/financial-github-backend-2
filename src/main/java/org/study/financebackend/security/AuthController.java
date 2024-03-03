@@ -68,8 +68,8 @@ public class AuthController {
 //		response.addCookie(accessCookie);
 //		response.addCookie(refreshCookie);
 
-		response.setHeader("Set-Cookie", String.format("code=%s; HttpOnly; SameSite=none",accessToken));
-		response.setHeader("Set-Cookie",String.format("refreshCode=%s; HttpOnly; SameSite=none",refreshToken));
+		response.setHeader("Set-Cookie", String.format("code=%s; HttpOnly; SameSite=None",accessToken));
+		response.setHeader("Set-Cookie",String.format("refreshCode=%s; HttpOnly; SameSite=None",refreshToken));
 		return ResponseEntity.ok().build();
 	}
 }
