@@ -11,8 +11,3 @@ spring:
           introspection-uri: https://www.googleapis.com
           client-id: ${GOOGLE_CLIENT_ID}
           client-secret: ${GOOGLE_SECRET_ID}
-#      client:
-#        registration:
-#          google:
-#            client-id: 996678195569-709qfbbjp4rcllpht05os661j9haslp4.apps.googleusercontent.com
-#            client-secret: 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
