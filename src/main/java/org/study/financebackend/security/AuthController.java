@@ -51,19 +51,25 @@ public class AuthController {
 		).execute();
 		String accessToken = execute.getAccessToken();
 		String refreshToken = execute.getRefreshToken();
-		Cookie accessCookie = new Cookie("code", accessToken);
-		Cookie refreshCookie = new Cookie("refreshCode", refreshToken);
-		accessCookie.setHttpOnly(true);
-		accessCookie.setPath("/");
-		accessCookie.setSecure(true);
+//		Cookie accessCookie = new Cookie("code", accessToken);
+//		Cookie refreshCookie = new Cookie("refreshCode", refreshToken);
+//		accessCookie.setHttpOnly(true);
+//		accessCookie.setPath("/");
+//		accessCookie.setSecure(true);
+//
+//
+//		response.setHeader("Set-Cookie", String.format("code=%s; HttpOnly; SameSite=none",accessCookie));
+//		response.setHeader("Set-Cookie",String.format("refreshCode=%s; HttpOnly; SameSite=none",refreshCookie));
+//
+//
+//		refreshCookie.setHttpOnly(true);
+//		refreshCookie.setPath("/");
+//		refreshCookie.setSecure(true);
+//		response.addCookie(accessCookie);
+//		response.addCookie(refreshCookie);
 
-		refreshCookie.setHttpOnly(true);
-		refreshCookie.setPath("/");
-		refreshCookie.setSecure(true);
-		System.out.println("accessCookie.getValue() = " + accessCookie.getValue());
-		System.out.println("refreshCookie.getValue() = " + refreshCookie.getValue());
-		response.addCookie(accessCookie);
-		response.addCookie(refreshCookie);
+		response.setHeader("Set-Cookie", String.format("code=%s; HttpOnly; SameSite=none",accessToken));
+		response.setHeader("Set-Cookie",String.format("refreshCode=%s; HttpOnly; SameSite=none",refreshToken));
 		return ResponseEntity.ok().build();
 	}
 }
