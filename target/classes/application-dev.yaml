@@ -1,16 +1,16 @@
-spring:
-  datasource:
-    url: jdbc:postgresql://postgres:5432/financial
-    username: orikus
-    password: etosecret
-
-  security:
-    oauth2:
-      resourceserver:
-        opaquetoken:
-          introspection-uri: https://www.googleapis.com
-          client-id: 996678195569-ir2d4b5k2t1g70b1i2msg0onss5pj604.apps.googleusercontent.com
-          client-secret: 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
-
-
-
+#spring:
+#  datasource:
+#    url: jdbc:postgresql://postgres:5432/financial
+#    username: orikus
+#    password: etosecret
+#
+#  security:
+#    oauth2:
+#      resourceserver:
+#        opaquetoken:
+#          introspection-uri: https://www.googleapis.com
+#          client-id: 996678195569-ir2d4b5k2t1g70b1i2msg0onss5pj604.apps.googleusercontent.com
+#          client-secret: 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
+#
+#
+#
