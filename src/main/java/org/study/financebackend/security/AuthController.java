@@ -27,12 +27,15 @@ public class AuthController {
 	@Value("${spring.security.oauth2.resourceserver.opaquetoken.client-secret}")
 	private String clientSecret;
 
+//	private static final String URL_REDIRECT="https://financial-tracker-frontend.onrender.com";
+	private static final String URL_REDIRECT="http://localhost:4200";
+
 
 	@GetMapping("/auth/url")
 	public ResponseEntity<UrlDto> auth() {
 		String url = new GoogleAuthorizationCodeRequestUrl(
 				clientId,
-				"https://financial-tracker-frontend.onrender.com/",
+				URL_REDIRECT,
 				Arrays.asList("email", "profile", "openid")
 		).setAccessType("offline").setApprovalPrompt("force").build();
 		return ResponseEntity.ok(new UrlDto(url));
@@ -47,7 +50,7 @@ public class AuthController {
 				clientId,
 				clientSecret,
 				code,
-				"https://financial-tracker-frontend.onrender.com/"
+				URL_REDIRECT
 		).execute();
 		String accessToken = execute.getAccessToken();
 		String refreshToken = execute.getRefreshToken();
