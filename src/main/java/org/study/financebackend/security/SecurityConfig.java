@@ -52,7 +52,7 @@ public class SecurityConfig {
 	@Bean
 	public CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration configuration = new CorsConfiguration();
-		configuration.setAllowedOriginPatterns(Arrays.asList("https://financial-tracker-frontend.onrender.com","http://localhost:4200","http://localhost:8080"));
+		configuration.setAllowedOriginPatterns(Arrays.asList("https://financial-tracker-frontend.onrender.com","http://localhost:4200","http://localhost:8080","http://financial-github-backend-production.up.railway.app"));
 		configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
 		configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type", "X-Requested-With", "X-CSRF-Token", "Host", "Content-Length", "accept", "Connection"));
 		configuration.setAllowCredentials(true); // Щоб дозволити відправлення кукі через перехресні запити
