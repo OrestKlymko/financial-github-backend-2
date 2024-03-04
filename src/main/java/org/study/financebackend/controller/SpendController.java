@@ -50,7 +50,7 @@ public class SpendController {
 	}
 
 
-	@DeleteMapping("/{id}")
+	@PostMapping("/{id}")
 	public ResponseEntity<String> deleteTransaction(@PathVariable UUID id) {
 		log.info("id for delete {}", id);
 		financialRepository.deleteById(id);
