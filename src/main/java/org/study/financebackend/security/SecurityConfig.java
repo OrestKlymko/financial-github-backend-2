@@ -3,6 +3,7 @@ package org.study.financebackend.security;
 
 import io.netty.handler.codec.http.cors.CorsConfig;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.checkerframework.checker.units.qual.A;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,6 +28,7 @@ import java.util.List;
 @Configuration
 @EnableWebSecurity
 @AllArgsConstructor
+@Slf4j
 public class SecurityConfig {
 
 	private final WebClient userInfoClient;
@@ -59,6 +61,7 @@ public class SecurityConfig {
 		configuration.setExposedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		source.registerCorsConfiguration("/**", configuration); // Застосувати конфігурацію до всіх шляхів
+		log.info("Cors configuration setup");
 		return source;
 	}
 
