@@ -8,6 +8,7 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.gson.GsonFactory;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +19,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 @RestController
-//@CrossOrigin(allowCredentials = "true", originPatterns = "*")
+@Slf4j
 public class AuthController {
 
 	@Value("${spring.security.oauth2.resourceserver.opaquetoken.client-id}")
@@ -39,6 +40,8 @@ public class AuthController {
 				URL_REDIRECT,
 				Arrays.asList("email", "profile", "openid")
 		).setAccessType("offline").setApprovalPrompt("force").build();
+
+		log.info("get auth url {}",url);
 		return ResponseEntity.ok(new UrlDto(url));
 	}
 
@@ -58,6 +61,15 @@ public class AuthController {
 		System.out.println("accessToken = " + accessToken);
 		response.addHeader("Set-Cookie", String.format("code=%s; HttpOnly; Secure; SameSite=None; Path=/", accessToken));
 		response.addHeader("Set-Cookie", String.format("refreshCode=%s; HttpOnly; Secure; SameSite=None; Path=/", refreshToken));
+		log.info("set token");
 		return ResponseEntity.ok().build();
 	}
+
+	@GetMapping("/user/logout")
+	public void logout(HttpServletResponse response) {
+		response.addHeader("Set-Cookie", String.format("code=%s; HttpOnly; Secure; SameSite=None; Path=/", ""));
+		response.addHeader("Set-Cookie", String.format("refreshCode=%s; HttpOnly; Secure; SameSite=None; Path=/", ""));
+		log.info("delete token");
+	}
+
 }

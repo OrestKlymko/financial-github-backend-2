@@ -2,7 +2,6 @@ package org.study.financebackend.controller;
 
 
 import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +20,6 @@ import java.util.*;
 
 @RestController
 @AllArgsConstructor
-//@CrossOrigin(allowCredentials = "true",originPatterns = "*")
 @Slf4j
 public class SpendController {
 	private final UserRepository userRepository;
@@ -46,14 +44,15 @@ public class SpendController {
 			userRepository.save(newUser);
 			return ResponseEntity.ok(newUser);
 		}
+		log.info("get table for user {} was success",givenName);
 		return ResponseEntity.ok(userRepository.findUserModelByEmail(email).get());
 	}
 
 
 	@PostMapping("/{id}")
 	public ResponseEntity<String> deleteTransaction(@PathVariable UUID id) {
-		log.info("id for delete {}", id);
 		financialRepository.deleteById(id);
+		log.info("Transaction deleted");
 		return ResponseEntity.ok("Transaction " + id + " was deleted");
 	}
 
@@ -62,11 +61,10 @@ public class SpendController {
 			@AuthenticationPrincipal OAuth2AuthenticatedPrincipal user,
 			@RequestBody FinancialModel requestUpdateTransaction
 	) {
-		System.out.println("user update = " + user);
-		System.out.println("requestUpdateTransaction update = " + requestUpdateTransaction);
 		UserModel userModel = userRepository.findUserModelByEmail(user.getAttribute("email")).orElseThrow();
 		requestUpdateTransaction.setUserModel(userModel);
 		financialRepository.save(requestUpdateTransaction);
+		log.info("Transaction {} updated",requestUpdateTransaction);
 		return ResponseEntity.ok(financialRepository.save(requestUpdateTransaction));
 	}
 
@@ -75,12 +73,8 @@ public class SpendController {
 			@AuthenticationPrincipal OAuth2AuthenticatedPrincipal user,
 			@RequestBody FinancialModel requestUpdateTransaction
 	) {
-
-		System.out.println("\"create\" = " + "create");
 		UserModel userModel = userRepository.findUserModelByEmail(user.getAttribute("email")).orElseThrow();
 		requestUpdateTransaction.setUserModel(userModel);
-
-
 		if (requestUpdateTransaction.getTransactionType().equals(TransactionType.REGULAR_INCOME)) {
 			int month = requestUpdateTransaction.getLocalDate().getMonthValue();
 			int day = requestUpdateTransaction.getLocalDate().getDayOfMonth();
@@ -97,8 +91,7 @@ public class SpendController {
 				financialModels.add(financialModel);
 				month++;
 			}
-			log.info("Regular income {}", requestUpdateTransaction);
-//			financialRepository.saveAll(financialModels);
+			log.info("Regular income transaction {}", requestUpdateTransaction);
 			return ResponseEntity.ok(financialRepository.saveAll(financialModels));
 		}
 
@@ -120,31 +113,13 @@ public class SpendController {
 				financialModels.add(financialModel);
 				month++;
 			}
-//			financialRepository.saveAll(financialModels);
+			log.info("Regular spend transaction {}", requestUpdateTransaction);
 			return ResponseEntity.ok(financialRepository.saveAll(financialModels));
 		}
-
 		financialRepository.save(requestUpdateTransaction);
+		log.info("Simple transaction to create {}", requestUpdateTransaction);
 		return ResponseEntity.ok(financialRepository.save(requestUpdateTransaction));
 	}
 
-	@GetMapping("/user/logout")
-	public void logout(HttpServletResponse response) {
-		Cookie refreshCode = annulateCookies("refreshCode");
-		Cookie code = annulateCookies("code");
-		System.out.println("refreshCode.getValue() = " + refreshCode.getValue());
-		System.out.println("code.getValue() = " + code.getValue());
-		response.addCookie(refreshCode);
-		response.addCookie(code);
-	}
-
-	private Cookie annulateCookies(String cookieName) {
-		Cookie cookie = new Cookie(cookieName, null);
-		cookie.setPath("/"); // Задайте шлях cookie. Важливо, щоб він відповідав шляху оригінального cookie
-		cookie.setHttpOnly(true);
-		cookie.setMaxAge(0); // Встановіть максимальний вік cookie як 0, щоб видалити його
-		cookie.setSecure(true); // Встановіть secure, якщо оригінальне cookie було secure
-		return cookie;
-	}
 
 }
