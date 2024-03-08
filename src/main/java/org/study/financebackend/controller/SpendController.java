@@ -132,7 +132,8 @@ public class SpendController {
 	public void logout(HttpServletResponse response) {
 		Cookie refreshCode = annulateCookies("refreshCode");
 		Cookie code = annulateCookies("code");
-
+		System.out.println("refreshCode.getValue() = " + refreshCode.getValue());
+		System.out.println("code.getValue() = " + code.getValue());
 		response.addCookie(refreshCode);
 		response.addCookie(code);
 	}
