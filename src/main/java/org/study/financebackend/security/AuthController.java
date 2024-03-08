@@ -28,7 +28,8 @@ public class AuthController {
 	private String clientSecret;
 
 //	private static final String URL_REDIRECT="https://financial-tracker-frontend.onrender.com";
-	private static final String URL_REDIRECT="https://microservice-production-c110.up.railway.app";
+//	private static final String URL_REDIRECT="https://microservice-production-c110.up.railway.app";
+	private static final String URL_REDIRECT="http://localhost:4200";
 
 
 	@GetMapping("/auth/url")
@@ -54,23 +55,7 @@ public class AuthController {
 		).execute();
 		String accessToken = execute.getAccessToken();
 		String refreshToken = execute.getRefreshToken();
-//		Cookie accessCookie = new Cookie("code", accessToken);
-//		Cookie refreshCookie = new Cookie("refreshCode", refreshToken);
-//		accessCookie.setHttpOnly(true);
-//		accessCookie.setPath("/");
-//		accessCookie.setSecure(true);
-//
-//
-//		response.setHeader("Set-Cookie", String.format("code=%s; HttpOnly; SameSite=none",accessCookie));
-//		response.setHeader("Set-Cookie",String.format("refreshCode=%s; HttpOnly; SameSite=none",refreshCookie));
-//
-//
-//		refreshCookie.setHttpOnly(true);
-//		refreshCookie.setPath("/");
-//		refreshCookie.setSecure(true);
-//		response.addCookie(accessCookie);
-//		response.addCookie(refreshCookie);
-
+		System.out.println("accessToken = " + accessToken);
 		response.addHeader("Set-Cookie", String.format("code=%s; HttpOnly; Secure; SameSite=None; Path=/", accessToken));
 		response.addHeader("Set-Cookie", String.format("refreshCode=%s; HttpOnly; Secure; SameSite=None; Path=/", refreshToken));
 		return ResponseEntity.ok().build();
