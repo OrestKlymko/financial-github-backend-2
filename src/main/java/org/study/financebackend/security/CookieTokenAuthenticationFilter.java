@@ -33,20 +33,18 @@ public class CookieTokenAuthenticationFilter extends GenericFilterBean {
 			throws IOException, ServletException {
 		HttpServletRequest httpServletRequest = (HttpServletRequest) request;
 		String token = extractTokenFromCookie(httpServletRequest);
-		System.out.println("token = " + token);
-		System.out.println("is Valid? = " + authenticationService.isTokenValid(token));
-		if (token != null && !authenticationService.isTokenValid(token)) {
+		if (token != null && !token.isEmpty() && !authenticationService.isTokenValid(token)) {
 			String refreshToken = extractRefreshTokenFromCookie(httpServletRequest);
 			String newAccessToken = authenticationService.refreshToken(refreshToken);
 			if (newAccessToken != null) {
 				OAuth2AuthenticatedPrincipal introspect = tokenIntrospector.introspect(newAccessToken);
 				Authentication authentication = new UsernamePasswordAuthenticationToken(introspect, null, introspect.getAuthorities());
 				SecurityContextHolder.getContext().setAuthentication(authentication);
-				updateCookie((HttpServletResponse) response,newAccessToken);
+				updateCookie((HttpServletResponse) response, newAccessToken);
 				chain.doFilter(request, response);
 			}
 		}
-		if (token != null && authenticationService.isTokenValid(token)) {
+		if (token != null && authenticationService.isTokenValid(token) && !token.isEmpty()) {
 			OAuth2AuthenticatedPrincipal introspect = tokenIntrospector.introspect(token);
 			Authentication authentication = new UsernamePasswordAuthenticationToken(introspect, null, introspect.getAuthorities());
 			System.out.println("authentication = " + authentication);
@@ -57,7 +55,7 @@ public class CookieTokenAuthenticationFilter extends GenericFilterBean {
 
 	}
 
-	private void updateCookie(HttpServletResponse response, String accessToken){
+	private void updateCookie(HttpServletResponse response, String accessToken) {
 		Cookie accessCookie = new Cookie("code", accessToken);
 		accessCookie.setHttpOnly(true); // Зробити кукі доступним тільки через HTTP
 		accessCookie.setPath("/"); // Встановлюємо шлях кукі, щоб воно було доступне на всьому сайті
