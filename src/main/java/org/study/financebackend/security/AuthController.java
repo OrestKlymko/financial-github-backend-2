@@ -28,7 +28,7 @@ public class AuthController {
 	private String clientSecret;
 
 //	private static final String URL_REDIRECT="https://financial-tracker-frontend.onrender.com";
-	private static final String URL_REDIRECT="https://microservice-production-c110.up.railway.app/";
+	private static final String URL_REDIRECT="https://microservice-production-c110.up.railway.app";
 
 
 	@GetMapping("/auth/url")
