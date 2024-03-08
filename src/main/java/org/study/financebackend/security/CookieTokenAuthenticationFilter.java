@@ -47,7 +47,6 @@ public class CookieTokenAuthenticationFilter extends GenericFilterBean {
 		if (token != null && authenticationService.isTokenValid(token) && !token.isEmpty()) {
 			OAuth2AuthenticatedPrincipal introspect = tokenIntrospector.introspect(token);
 			Authentication authentication = new UsernamePasswordAuthenticationToken(introspect, null, introspect.getAuthorities());
-			System.out.println("authentication = " + authentication);
 			SecurityContextHolder.getContext().setAuthentication(authentication);
 		}
 		chain.doFilter(request, response);
@@ -57,9 +56,9 @@ public class CookieTokenAuthenticationFilter extends GenericFilterBean {
 
 	private void updateCookie(HttpServletResponse response, String accessToken) {
 		Cookie accessCookie = new Cookie("code", accessToken);
-		accessCookie.setHttpOnly(true); // Зробити кукі доступним тільки через HTTP
-		accessCookie.setPath("/"); // Встановлюємо шлях кукі, щоб воно було доступне на всьому сайті
-		accessCookie.setSecure(true); // Встановлюємо кукі як Secure, щоб відправляти його тільки через HTTPS
+		accessCookie.setHttpOnly(true);
+		accessCookie.setPath("/");
+		accessCookie.setSecure(true);
 		response.addCookie(accessCookie);
 	}
 
