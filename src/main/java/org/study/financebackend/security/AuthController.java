@@ -59,16 +59,16 @@ public class AuthController {
 		String accessToken = execute.getAccessToken();
 		String refreshToken = execute.getRefreshToken();
 		System.out.println("accessToken = " + accessToken);
-		response.addHeader("Set-Cookie", String.format("code=%s; HttpOnly; Secure; SameSite=Strict; Path=/", accessToken));
-		response.addHeader("Set-Cookie", String.format("refreshCode=%s; HttpOnly; Secure; SameSite=Strict; Path=/", refreshToken));
+		response.addHeader("Set-Cookie", String.format("code=%s; HttpOnly; Secure; SameSite=Lax; Path=/", accessToken));
+		response.addHeader("Set-Cookie", String.format("refreshCode=%s; HttpOnly; Secure; SameSite=Lax; Path=/", refreshToken));
 		log.info("set token");
 		return ResponseEntity.ok().build();
 	}
 
 	@GetMapping("/user/logout")
 	public void logout(HttpServletResponse response) {
-		response.addHeader("Set-Cookie", String.format("code=%s; HttpOnly; Secure; SameSite=Strict; Path=/", ""));
-		response.addHeader("Set-Cookie", String.format("refreshCode=%s; HttpOnly; Secure; SameSite=Strict; Path=/", ""));
+		response.addHeader("Set-Cookie", String.format("code=%s; HttpOnly; Secure; SameSite=Lax; Path=/", ""));
+		response.addHeader("Set-Cookie", String.format("refreshCode=%s; HttpOnly; Secure; SameSite=Lax; Path=/", ""));
 		log.info("delete token");
 	}
 
