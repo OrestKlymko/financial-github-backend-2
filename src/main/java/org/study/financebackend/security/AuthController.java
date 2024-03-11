@@ -59,16 +59,16 @@ public class AuthController {
 		String accessToken = execute.getAccessToken();
 		String refreshToken = execute.getRefreshToken();
 		System.out.println("accessToken = " + accessToken);
-		response.addHeader("Set-Cookie", String.format("code=%s; HttpOnly; Path=/", accessToken));
-		response.addHeader("Set-Cookie", String.format("refreshCode=%s; HttpOnly; Path=/", refreshToken));
+		response.addHeader("Set-Cookie", String.format("code=%s; HttpOnly; SameSite=None; Path=/", accessToken));
+		response.addHeader("Set-Cookie", String.format("refreshCode=%s; HttpOnly; SameSite=None; Path=/", refreshToken));
 		log.info("set token");
 		return ResponseEntity.ok().build();
 	}
 
 	@GetMapping("/user/logout")
 	public void logout(HttpServletResponse response) {
-		response.addHeader("Set-Cookie", String.format("code=%s; HttpOnly; Path=/", ""));
-		response.addHeader("Set-Cookie", String.format("refreshCode=%s; HttpOnly; Path=/", ""));
+		response.addHeader("Set-Cookie", String.format("code=%s; HttpOnly; SameSite=None; Path=/", ""));
+		response.addHeader("Set-Cookie", String.format("refreshCode=%s; HttpOnly; SameSite=None; Path=/", ""));
 		log.info("delete token");
 	}
 
